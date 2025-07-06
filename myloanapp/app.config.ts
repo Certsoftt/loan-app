@@ -37,6 +37,9 @@ const config = (): ExpoConfig => ({
     eas: {
         projectId: "b4d115a9-d401-4ff4-92df-45b4d3487c16"
     },
+    plugins: [
+          "@react-native-firebase/app"
+    ],
   },
 });
 
