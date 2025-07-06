@@ -48,6 +48,28 @@ Yes. When a loan is created offline (via ApplyLoanScreen.tsx), it is cached loca
 #### Does the app fetch and display a list of loans from a mock/local JSON file when offline?
 Yes. When offline, HomeScreen.tsx sets the loan list to the mock data from mockLoans.ts, so users see a sample list even without network connectivity. It also displays cached user-created offline loans.
 
+#### Does app uses native feature?
+several native features of mobile devices through Expo and React Native libraries. Here are the main native features integrated:
+
+1. **Biometric Authentication**:
+ - Uses Expo’s `expo-local-authentication` to access Face ID and Touch ID (native device biometrics).
+
+2. **Push Notifications**:
+ - Uses Expo’s `expo-notifications` to register for and receive native push notifications.
+
+3. **Secure Storage**:
+ - Uses `@react-native-async-storage/async-storage` for local data caching (native storage API).  - (You can also use expo-secure-store for even more secure token storage if needed.)
+
+4. **Network Status Detection**:
+ - Uses `@react-native-community/netinfo` to detect online/offline status (native network info).
+
+5. **Google Sign-In**:
+ - Uses `@react-native-google-signin/google-signin` for native Google authentication.
+
+
+All these features are accessed via cross-platform APIs, so your app works natively on both iOS and Android without writing separate native code.
+
+
 ## Setup & Running the Project
 
 ### 1. Prerequisites
