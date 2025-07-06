@@ -1,10 +1,32 @@
 import 'dotenv/config';
-import { ExpoConfig, ConfigContext } from '@expo/config';
+import { ExpoConfig } from '@expo/config';
 
-const config = ({ config }: ConfigContext): ExpoConfig => ({
-  ...config,
-  name: config.name || 'myloanapp',
-  slug: config.slug || 'myloanapp',
+const config = (): ExpoConfig => ({
+  name: 'myloanapp',
+  slug: 'myloanapp',
+  version: '1.0.0',
+  orientation: 'portrait',
+  icon: './assets/icon.png',
+  userInterfaceStyle: 'light',
+  newArchEnabled: true,
+  splash: {
+    image: './assets/splash-icon.png',
+    resizeMode: 'contain',
+    backgroundColor: '#ffffff',
+  },
+  ios: {
+    supportsTablet: true,
+  },
+  android: {
+    adaptiveIcon: {
+      foregroundImage: './assets/adaptive-icon.png',
+      backgroundColor: '#ffffff',
+    },
+    edgeToEdgeEnabled: true,
+  },
+  web: {
+    favicon: './assets/favicon.png',
+  },
   extra: {
     FIREBASE_API_KEY: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
     FIREBASE_AUTH_DOMAIN: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
