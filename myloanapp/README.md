@@ -61,13 +61,13 @@ myloanapp/
 
 ### KEY NOTES
 
-- **Are loans created offline cached and synced to Firestore when back online?**
+- **Are loans created offline cached and synced to Firestore when back online?**<br/>
 Yes. When a loan is created offline (via ApplyLoanScreen.tsx), it is cached locally using `addLoanOffline`. In HomeScreen.tsx, when the app detects it is back online, it calls `syncLoansWithFirestore` to upload any cached (unsynced) loans to Firestore.
 
-- **Does the app fetch and display a list of loans from a mock/local JSON file when offline?**
+- **Does the app fetch and display a list of loans from a mock/local JSON file when offline?**<br/>
 Yes. When offline, HomeScreen.tsx sets the loan list to the mock data from mockLoans.ts, so users see a sample list even without network connectivity. It also displays cached user-created offline loans.
 
-- **Does app uses native feature?**
+- **Does app uses native feature?**<br/>
 several native features of mobile devices through Expo and React Native libraries. Here are the main native features integrated:
 
 1. **Biometric Authentication**:
@@ -93,40 +93,63 @@ All these features are accessed via cross-platform APIs, so the loan app works n
 
 #### Authentication Flow
 ✅ Login screen with email/password fields, login button, and validation.
+
 ✅ Registration (sign up) with email/password, Google sign-in, and email verification.
+
 ✅ Secure token storage via Firebase Auth (Firebase SDK handles token management securely).
+
 ✅ Navigation to the home screen after login.
+
 
 #### Home Screen - Loan List
 ✅ When online fetches loans from Firestore (per user). When offline fetches and displays both cached user-created offline loans and mock loans in the loan list. 
    - This ensures users see their own offline loan applications as well as example data for a complete experience
+
 ✅ Displays loan amount, status (pending, approved, rejected, flagged), and date applied. 
+
 ✅ Color-coded status badges for clear visibility. Also visually distinguishes loan list by:
    - Cached user-created offline loans with a bold orange (Offline) label.
    - Mock/sample loans with a gray italic (Sample) label.
+
 ✅ Tapping a loan navigates to a details screen with full info.
+
 
 #### Apply for a New Loan
 ✅ “Apply for Loan” screen with input fields for amount and purpose.
    - when offline: Loans created offline are cached and synced to Firestore when back online.
+
 ✅ Input validation and error/success messages.
+
 ✅ Submits to Firestore (simulates POST).
+
 ✅ Snackbar/toast feedback is shown after loan submission (success, error, or offline save).
+
 
 #### UI/UX
 ✅ Clean, modern, and responsive layout using React Native Paper.
+
 ✅ Color-coded badges/icons for loan status.
+
 ✅ Smooth navigation with React Navigation.
+
 ✅ Pull-to-refresh on the loan list.
+
 ✅ Dark mode support via theming.
+
 ✅ TypeScript used throughout.
+
 ✅ Modular, scalable, and maintainable code structure.
+
 
 #### Additional Features (Assumptions)
 ✅ Firebase/Firestore integration for authentication and data.
+
 ✅ Biometric login (Face ID/Touch ID).
+
 ✅ Push notification integration.
+
 ✅ Offline support (basic, with NetInfo).
+
 ✅ Automated tests (example for login validation).
 
 
@@ -154,7 +177,7 @@ All these features are accessed via cross-platform APIs, so the loan app works n
 
 ### 3. Install Dependencies
 ```sh
-npm install
+npm install --legacy-peer-deps
 ```
 
 ### 4. Start the App
