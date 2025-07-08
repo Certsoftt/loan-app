@@ -35,7 +35,7 @@ const config = (): ExpoConfig => ({
     FIREBASE_MESSAGING_SENDER_ID: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
     FIREBASE_APP_ID: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
     eas: {
-        projectId: "b4d115a9-d401-4ff4-92df-45b4d3487c16"
+        projectId: "55a6eed1-0a57-4415-a452-247f1c98651d"
     },
     plugins: [
           "@react-native-firebase/app"
