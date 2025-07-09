@@ -18,11 +18,13 @@ Integrated with Expo Notifications for real-time updates.
 - **UI/UX:** 
 Modern, responsive, accessible design with dark mode, color-coded status badges, and clear feedback (snackbar/toast).
 
-- **Automated Tests:** Example tests for validation and offline features.
+- **Automated Tests:** 
+Example tests for validation and offline features.
 
 ## Project Structure
 ```
 myloanapp/
+├── app/                    # Not found expo router component
 ├── src/
 │   ├── components/         # Reusable UI components (no components for now)
 │   ├── screens/            # App screens (Login, Signup, Home, ApplyLoan, etc.)
@@ -192,11 +194,25 @@ In your project directory, run:
 ```sh
 eas init
 ```
-   - give your project a name. Then visit the project using the provided url. You can find them at `https://expo.dev/accounts/[account]/projects/[project]`. Copy your `slug`, `project_id`, and `owner`and use them as values to `PROJECT_SLUG`, `EAS_PROJECT_ID`, and `OWNER`.
+   - Give your project a name. Then visit the project using the provided url. You can find them at `https://expo.dev/accounts/[account]/projects/[project]`. Copy your `slug`, `project_id`, and `owner`and use them as values to `PROJECT_SLUG`, `EAS_PROJECT_ID`, and `OWNER`.
    - This process will create an `eas.json` file and register your project with Expo.
    - During this process, Expo will generate a new EAS project ID and link it to your project.
 
 5. Copy the content of `eas.js` and replace it with the content of your generated `eas.json` file.
+   - Update your `env` property object in the `eas.json` to your own project setting. Current setting is:
+   ```json
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "development",
+        <!-- change this to your expo dev projectID -->
+        "EXPO_PUBLIC_EAS_PROJECT_ID": "55a6eed1-0a57-4415-a452-247f1c98651d",
+        <!-- change this to your expo dev project slug -->
+        "EXPO_PUBLIC_PROJECT_SLUG": "myloanapp",
+        <!-- change this to your expo dev project owner -->
+        "EXPO_PUBLIC_OWNER": "makemorer",
+        <!-- change this to your expo dev project slug -->
+        "EXPO_PUBLIC_APP_NAME": "myloanapp"
+      },
+   ```
 
 6. Setup your Environment variables for `production`, `preview`, and `developemnt` environments on Expo Dev Using your `.env.local.example` to create the `Name`(s) of the variables. You can find the environment variables page at `https://expo.dev/accounts/[account]/projects/[project]/environment-variables`.
 
@@ -204,6 +220,8 @@ eas init
 ### 4. Install Dependencies
 ```sh
 yarn install
+or
+npm install
 ```
 
 ### 5. Build the App
@@ -225,7 +243,7 @@ Scan the QR code with the real device where the app had been installed in order 
 eas submit --platform android
 eas submit --platform ios
 ```
-### 8. Running Tests
+### 8. Running Tests (oprional)
 ```sh
 npm test
 ```
