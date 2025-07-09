@@ -5,6 +5,13 @@
   },
   "build": {
     "development": {
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "development",
+        "EXPO_PUBLIC_EAS_PROJECT_ID": "55a6eed1-0a57-4415-a452-247f1c98651d",
+        "EXPO_PUBLIC_PROJECT_SLUG": "myloanapp",
+        "EXPO_PUBLIC_OWNER": "makemorer",
+        "EXPO_PUBLIC_APP_NAME": "myloanapp"
+      },
       "developmentClient": true,
       "distribution": "internal",
       "environment": "development",
