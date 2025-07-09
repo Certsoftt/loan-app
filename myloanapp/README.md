@@ -161,32 +161,71 @@ All these features are accessed via cross-platform APIs, so the loan app works n
 - Expo CLI (`npm install -g expo-cli`)
 - A Firebase project (see below)
 
+- Clone this repository
+```sh
+git clone https://github.com/certsoftt/loan-app.git
+```
+
+- Rename `eas.json` to `eas.js`
+
 ### 2. Firebase Setup
 1. Go to [Firebase Console](https://console.firebase.google.com/) and create a new project.
 2. Register a web app and copy the config values.
 3. Enable Authentication (Email/Password, Google) and Firestore Database.
-4. Add your Firebase config to `.env`:
-   ```env
-   EXPO_PUBLIC_FIREBASE_API_KEY=your_api_key
-   EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
-   EXPO_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-   EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-   EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-   EXPO_PUBLIC_FIREBASE_APP_ID=your_app_id
-   ```
 
-### 3. Install Dependencies
+### 3. Expo Dev setup
+1. Register on [Expo Dev](https://expo.dev)
+
+2. Install EAS CLI(if not already):
 ```sh
-npm install --legacy-peer-deps
+npm install -g eas-cli
 ```
 
-### 4. Start the App
+3. Log in to Expo using your expo.dev account details<br/>
+In your project directory, run:
+```sh
+eas login
+```
+
+4. Initialize EAS in Your Project<br/>
+In your project directory, run:
+```sh
+eas init
+```
+   - give your project a name. Then visit the project using the provided url. You can find them at `https://expo.dev/accounts/[account]/projects/[project]`. Copy your `slug`, `project_id`, and `owner`and use them as values to `PROJECT_SLUG`, `EAS_PROJECT_ID`, and `OWNER`.
+   - This process will create an `eas.json` file and register your project with Expo.
+   - During this process, Expo will generate a new EAS project ID and link it to your project.
+
+5. Copy the content of `eas.js` and replace it with the content of your generated `eas.json` file.
+
+6. Setup your Environment variables for `production`, `preview`, and `developemnt` environments on Expo Dev Using your `.env.local.example` to create the `Name`(s) of the variables. You can find the environment variables page at `https://expo.dev/accounts/[account]/projects/[project]/environment-variables`.
+
+
+### 4. Install Dependencies
+```sh
+yarn install
+```
+
+### 5. Build the App
+```sh
+eas build --profile development --platform android
+or
+eas build --profile development --platform ios
+```
+Scan the QR code To run the app on real device.
+
+### 6. Run the App
 ```sh
 npx expo start
 ```
-Scan the QR code with the Expo Go app (iOS/Android) or run on an emulator.
+Scan the QR code with the real device where the app had been installed in order to launch the app.
 
-### 5. Running Tests
+### 7. Submit the App Production Build (optional)
+```sh
+eas submit --platform android
+eas submit --platform ios
+```
+### 8. Running Tests
 ```sh
 npm test
 ```

@@ -1,16 +1,17 @@
 import { ConfigContext, ExpoConfig } from "expo/config";
 import { version } from "./package.json";
+import 'dotenv/config';
 
 // Replace these with your EAS project ID and project slug.
 // You can find them at https://expo.dev/accounts/[account]/projects/[project].
-const EAS_PROJECT_ID = "55a6eed1-0a57-4415-a452-247f1c98651d";
-const PROJECT_SLUG = "myloanapp";
-const OWNER = "makemorer";
+const EAS_PROJECT_ID = process.env.EAS_PROJECT_ID;
+const PROJECT_SLUG = process.env.PROJECT_SLUG;
+const OWNER = process.env.OWNER;
 
 // App production config
-const APP_NAME = "myloanapp";
-const BUNDLE_IDENTIFIER = "com.company.myloanapp";
-const PACKAGE_NAME = "com.company.myloanapp";
+const APP_NAME = process.env.APP_NAME;
+const BUNDLE_IDENTIFIER = process.env.BUNDLE_IDENTIFIER;
+const PACKAGE_NAME = process.env.PACKAGE_NAME;
 const ICON = "./assets/images/icons/iOS-Prod.png";
 const ADAPTIVE_ICON = "./assets/images/icons/Android-Prod.png";
 const SCHEME = "app-scheme";
