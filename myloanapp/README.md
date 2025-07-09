@@ -18,11 +18,13 @@ Integrated with Expo Notifications for real-time updates.
 - **UI/UX:** 
 Modern, responsive, accessible design with dark mode, color-coded status badges, and clear feedback (snackbar/toast).
 
-- **Automated Tests:** Example tests for validation and offline features.
+- **Automated Tests:** 
+Example tests for validation and offline features.
 
 ## Project Structure
 ```
 myloanapp/
+├── app/                    # Not found expo router component
 ├── src/
 │   ├── components/         # Reusable UI components (no components for now)
 │   ├── screens/            # App screens (Login, Signup, Home, ApplyLoan, etc.)
@@ -192,7 +194,7 @@ In your project directory, run:
 ```sh
 eas init
 ```
-   - give your project a name. Then visit the project using the provided url. You can find them at `https://expo.dev/accounts/[account]/projects/[project]`. Copy your `slug`, `project_id`, and `owner`and use them as values to `PROJECT_SLUG`, `EAS_PROJECT_ID`, and `OWNER`.
+   - Give your project a name. Then visit the project using the provided url. You can find them at `https://expo.dev/accounts/[account]/projects/[project]`. Copy your `slug`, `project_id`, and `owner`and use them as values to `PROJECT_SLUG`, `EAS_PROJECT_ID`, and `OWNER`.
    - This process will create an `eas.json` file and register your project with Expo.
    - During this process, Expo will generate a new EAS project ID and link it to your project.
 
@@ -201,9 +203,13 @@ eas init
    ```json
       "env": {
         "EXPO_PUBLIC_APP_ENV": "development",
+        <!-- change this to your expo dev projectID -->
         "EXPO_PUBLIC_EAS_PROJECT_ID": "55a6eed1-0a57-4415-a452-247f1c98651d",
+        <!-- change this to your expo dev project slug -->
         "EXPO_PUBLIC_PROJECT_SLUG": "myloanapp",
+        <!-- change this to your expo dev project owner -->
         "EXPO_PUBLIC_OWNER": "makemorer",
+        <!-- change this to your expo dev project slug -->
         "EXPO_PUBLIC_APP_NAME": "myloanapp"
       },
    ```
@@ -214,6 +220,8 @@ eas init
 ### 4. Install Dependencies
 ```sh
 yarn install
+or
+npm install
 ```
 
 ### 5. Build the App
@@ -235,7 +243,7 @@ Scan the QR code with the real device where the app had been installed in order 
 eas submit --platform android
 eas submit --platform ios
 ```
-### 8. Running Tests
+### 8. Running Tests (oprional)
 ```sh
 npm test
 ```
