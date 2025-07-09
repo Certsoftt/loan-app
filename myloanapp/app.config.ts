@@ -75,15 +75,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     plugins: [
       "@react-native-firebase/app",
-      [
-        "expo-splash-screen",
-        {
-          image: "./assets/images/splash-icon.png",
-          imageWidth: 200,
-          resizeMode: "contain",
-          backgroundColor: "#ffffff",
-        },
-      ],
     ],
     experiments: {
       typedRoutes: true,
