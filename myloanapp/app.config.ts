@@ -1,32 +1,32 @@
 import { ConfigContext, ExpoConfig } from "expo/config";
 import { version } from "./package.json";
-import 'dotenv/config';
+// import 'dotenv/config';
 
 // Replace these with your EAS project ID and project slug.
 // You can find them at https://expo.dev/accounts/[account]/projects/[project].
-const EAS_PROJECT_ID = process.env.EAS_PROJECT_ID;
-const PROJECT_SLUG = process.env.PROJECT_SLUG;
-const OWNER = process.env.OWNER;
+const EAS_PROJECT_ID = process.env.EXPO_PUBLIC_EAS_PROJECT_ID;
+const PROJECT_SLUG = process.env.EXPO_PUBLIC_PROJECT_SLUG;
+const OWNER = process.env.EXPO_PUBLIC_OWNER;
 
 // App production config
-const APP_NAME = process.env.APP_NAME;
-const BUNDLE_IDENTIFIER = process.env.BUNDLE_IDENTIFIER;
-const PACKAGE_NAME = process.env.PACKAGE_NAME;
+const APP_NAME = process.env.EXPO_PUBLIC_APP_NAME;
+const BUNDLE_IDENTIFIER = process.env.EXPO_PUBLIC_BUNDLE_IDENTIFIER;
+const PACKAGE_NAME = process.env.EXPO_PUBLIC_PACKAGE_NAME;
 const ICON = "./assets/images/icons/iOS-Prod.png";
 const ADAPTIVE_ICON = "./assets/images/icons/Android-Prod.png";
 const SCHEME = "app-scheme";
 
 export default ({ config }: ConfigContext): ExpoConfig => {
-  console.log("⚙️ Building app for environment:", process.env.APP_ENV);
-  const { name, bundleIdentifier, icon, adaptiveIcon, packageName, scheme } =
+  console.log("⚙️ Building app for environment:", process.env.EXPO_PUBLIC_APP_ENV);
+  const { bundleIdentifier, icon, adaptiveIcon, packageName, scheme } =
     getDynamicAppConfig(
-      (process.env.APP_ENV as "development" | "preview" | "production") ||
+      (process.env.EXPO_PUBLIC_APP_ENV as "development" | "preview" | "production") ||
         "development"
     );
 
   return {
     ...config,
-    name: name,
+    name: PROJECT_SLUG,
     version, // Automatically bump your project version with `npm version patch`, `npm version minor` or `npm version major`.
     slug: PROJECT_SLUG, // Must be consistent across all environments.
     orientation: "portrait",
@@ -74,7 +74,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       favicon: "./assets/images/favicon.png",
     },
     plugins: [
-      "@react-native-firebase/app",
+      "@react-native-firebase/app", "expo-router"
     ],
     experiments: {
       typedRoutes: true,
