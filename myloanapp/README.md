@@ -273,26 +273,27 @@ This project is configured to support Google authentication on both Android and 
 2. **Android: Set Up OAuth Client ID**
 - In the Firebase Console, under Project settings, select your Android app.
 - Make sure your app’s package name matches your Expo config.
-- Under SHA certificate fingerprints, add your app’s SHA-1 and SHA-256 fingerprints (see [how to get these](#note-for-enabling-google-authentication-with-android-platform-you-have-to-provide-sha-fingerprint-do-the-following)).
+- Under SHA certificate fingerprints, add your app’s SHA-1 and SHA-256 fingerprints (see [how to get these in README note-for-enabling-google-authentication-with-android-platform-you-have-to-provide-sha-fingerprint-do-the-following](#note-for-enabling-google-authentication-with-android-platform-you-have-to-provide-sha-fingerprint-do-the-following)).
 - Under OAuth 2.0 client IDs, you should see an entry for your Android app. If not:
 - Click Add fingerprint or Add OAuth client.
 - Enter your app’s package name and SHA-1.
 - Download the updated google-services.json and place it in your project as required.
 
 3. **Google Cloud Console: Verify OAuth Consent Screen**
-- Go to the Google Cloud Console.
-- Make sure you’re in the same project as your Firebase app.
+- Go to the [Google Cloud Console](https://console.cloud.google.com/).
+- Make sure you’re in the same project as your Firebase app. You can find all your projects in `All Tab`
+[All Tabs image](assets/images/alltabs.png)
 - Under OAuth 2.0 Client IDs, you should see entries for both iOS and Android.
 - If needed, configure the OAuth consent screen (add app name, support email, and authorized domains).
 
 4. **Expo/React Native Configuration**
-Ensure your app.config.ts or app.json contains the correct bundle identifier (iOS) and package name (Android).
-For Google sign-in, use the correct client IDs in your app’s code (see [how to do this](#google-authentication-setup-android--ios)).
+Ensure your app.config.ts contains the correct bundle identifier (iOS) and package name (Android).
+For Google sign-in, use the correct client IDs in your app’s code (see [how to do this in README google-authentication-setup-android--ios](#google-authentication-setup-android--ios)).
 
 
 ### 6. Setting up Expo_Client_ID:
 
-1. Go to the Google Cloud Console for your Firebase web platform project.
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/) for your Firebase web platform project.
 
 2. Find the OAuth 2.0 Client IDs section.
 

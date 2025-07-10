@@ -12,8 +12,8 @@ const OWNER = process.env.EXPO_PUBLIC_OWNER;
 const APP_NAME = process.env.EXPO_PUBLIC_APP_NAME;
 const BUNDLE_IDENTIFIER = process.env.EXPO_PUBLIC_BUNDLE_IDENTIFIER;
 const PACKAGE_NAME = process.env.EXPO_PUBLIC_PACKAGE_NAME;
-const ICON = "./assets/images/icons/iOS-Prod.png";
-const ADAPTIVE_ICON = "./assets/images/icons/Android-Prod.png";
+const ICON = "./assets/images/icons/ios/iOS-Prod.png";
+const ADAPTIVE_ICON = "./assets/images/icons/android/Android-Prod.png";
 const SCHEME = "app-scheme";
 
 export default ({ config }: ConfigContext): ExpoConfig => {
@@ -29,13 +29,13 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     name: PROJECT_SLUG,
     version, // Automatically bump your project version with `npm version patch`, `npm version minor` or `npm version major`.
     slug: PROJECT_SLUG, // Must be consistent across all environments.
-    orientation: "portrait",
+    orientation: "default",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     icon: icon,
     scheme: scheme,
     splash: {
-      image: './assets/images/splash-icon.png',
+      image: './assets/images/splash-icon.jpg',
       imageWidth: 200,
       resizeMode: "contain",
       backgroundColor: "#ffffff",
@@ -107,8 +107,8 @@ export const getDynamicAppConfig = (
       name: `${APP_NAME} Preview`,
       bundleIdentifier: `${BUNDLE_IDENTIFIER}`,
       packageName: `${PACKAGE_NAME}`,
-      icon: "./assets/images/icons/iOS-Prev.png",
-      adaptiveIcon: "./assets/images/icons/Android-Prev.png",
+      icon: "./assets/images/icons/ios/iOS-Prev.png",
+      adaptiveIcon: "./assets/images/icons/android/Android-Prev.png",
       scheme: `${SCHEME}-prev`,
     };
   }
@@ -117,8 +117,8 @@ export const getDynamicAppConfig = (
     name: `${APP_NAME} Development`,
     bundleIdentifier: `${BUNDLE_IDENTIFIER}`,
     packageName: `${PACKAGE_NAME}`,
-    icon: "./assets/images/icons/iOS-Dev.png",
-    adaptiveIcon: "./assets/images/icons/Android-Dev.png",
+    icon: "./assets/images/icons/ios/iOS-Dev.png",
+    adaptiveIcon: "./assets/images/icons/android/Android-Dev.png",
     scheme: `${SCHEME}-dev`,
   };
 };
