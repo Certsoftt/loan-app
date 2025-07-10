@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, Text, HelperText } from 'react-native-paper';
 import { auth } from '../services/firebase';
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail, signInWithCredential, GoogleAuthProvider } from 'firebase/auth';
 import * as LocalAuthentication from 'expo-local-authentication';
 import NetInfo from '@react-native-community/netinfo';
 import { logEvent } from '../services/log';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { configureGoogleSignIn } from '../services/authConfig';
 
 interface LoginProps {
   navigation: any;
@@ -20,6 +22,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const [resetting, setResetting] = useState(false);
 
   React.useEffect(() => {
+    configureGoogleSignIn();
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsOffline(!state.isConnected);
     });
@@ -99,6 +102,27 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
+      // idToken is on userInfo.idToken for web/Expo
+      const { idToken } = await GoogleSignin.getTokens();
+      if (!idToken) {
+        setError('Google sign-in failed: No ID token received');
+        return;
+      }
+      // Use idToken to authenticate with Firebase
+      const googleCredential = GoogleAuthProvider.credential(idToken);
+      await signInWithCredential(auth, googleCredential);
+      navigation.replace('Home');
+    } catch (error: any) {
+      setError('Google sign-in failed');
+      logEvent('google_signin_failed', { error: error?.message });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text variant="headlineMedium" style={styles.title}>Login</Text>
@@ -128,6 +152,9 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
       <Button mode="outlined" onPress={handleBiometricLogin} style={styles.button}>Login with Face ID / Touch ID</Button>
       <Button onPress={handleForgotPassword} mode="text" style={styles.button} loading={resetting} disabled={resetting}>
         Forgot Password?
+      </Button>
+      <Button mode="outlined" onPress={handleGoogleSignIn} style={styles.button}>
+        Sign in with Google
       </Button>
       {!!resetMsg && <HelperText type="info" visible>{resetMsg}</HelperText>}
     </View>
