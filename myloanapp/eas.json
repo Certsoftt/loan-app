@@ -11,7 +11,7 @@
         "EXPO_PUBLIC_PROJECT_SLUG": "myloanapp",
         "EXPO_PUBLIC_OWNER": "makemorer",
         "EXPO_PUBLIC_APP_NAME": "myloanapp",
-        "EAS_SKIP_AUTO_FINGERPRINT": 1
+        "EAS_SKIP_AUTO_FINGERPRINT": "1"
       },
       "developmentClient": true,
       "distribution": "internal",

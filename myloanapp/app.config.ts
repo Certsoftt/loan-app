@@ -51,6 +51,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       },
       package: packageName,
       edgeToEdgeEnabled: true,
+      googleServicesFile: "./google-services.json", // Ensure this file is present in your project root
     },
     updates: {
       url: `https://u.expo.dev/${EAS_PROJECT_ID}`,
