@@ -43,6 +43,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ios: {
       supportsTablet: true,
       bundleIdentifier: bundleIdentifier,
+      googleServicesFile: "./GoogleService-info.plist", // Ensure this file is present in your project root
     },
     android: {
       adaptiveIcon: {
@@ -104,8 +105,8 @@ export const getDynamicAppConfig = (
   if (environment === "preview") {
     return {
       name: `${APP_NAME} Preview`,
-      bundleIdentifier: `${BUNDLE_IDENTIFIER}.preview`,
-      packageName: `${PACKAGE_NAME}.preview`,
+      bundleIdentifier: `${BUNDLE_IDENTIFIER}`,
+      packageName: `${PACKAGE_NAME}`,
       icon: "./assets/images/icons/iOS-Prev.png",
       adaptiveIcon: "./assets/images/icons/Android-Prev.png",
       scheme: `${SCHEME}-prev`,
@@ -114,8 +115,8 @@ export const getDynamicAppConfig = (
 
   return {
     name: `${APP_NAME} Development`,
-    bundleIdentifier: `${BUNDLE_IDENTIFIER}.dev`,
-    packageName: `${PACKAGE_NAME}.dev`,
+    bundleIdentifier: `${BUNDLE_IDENTIFIER}`,
+    packageName: `${PACKAGE_NAME}`,
     icon: "./assets/images/icons/iOS-Dev.png",
     adaptiveIcon: "./assets/images/icons/Android-Dev.png",
     scheme: `${SCHEME}-dev`,

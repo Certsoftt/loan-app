@@ -10,26 +10,37 @@ const firebaseConfig = {
   apiKey: 
   Platform.OS === 'android'
   ? Constants.expoConfig?.extra?.FIREBASE_API_KEY_ANDROID
+  : Platform.OS === "ios" 
+  ? Constants.expoConfig?.extra?.FIREBASE_API_KEY_IOS
   : Constants.expoConfig?.extra?.FIREBASE_API_KEY,
   authDomain:
   Platform.OS === 'android'
   ? Constants.expoConfig?.extra?.FIREBASE_AUTH_DOMAIN_ANDROID
+  : Platform.OS === "ios"
+  ? Constants.expoConfig?.extra?.FIREBASE_AUTH_DOMAIN_IOS
   : Constants.expoConfig?.extra?.FIREBASE_AUTH_DOMAIN,
-  projectId: Platform.OS === 'android'
+  projectId: 
+  Platform.OS === 'android'
   ? Constants.expoConfig?.extra?.FIREBASE_PROJECT_ID_ANDROID
+  : Platform.OS === "ios"
+  ? Constants.expoConfig?.extra?.FIREBASE_PROJECT_ID_IOS
   : Constants.expoConfig?.extra?.FIREBASE_PROJECT_ID,
-  storageBucket: 
+  storageBucket:
   Platform.OS === 'android'
   ? Constants.expoConfig?.extra?.FIREBASE_STORAGE_BUCKET_ANDROID
   : Constants.expoConfig?.extra?.FIREBASE_STORAGE_BUCKET,
   messagingSenderId:
   Platform.OS === 'android'
   ? Constants.expoConfig?.extra?.EXPO_PUBLIC_FIREBASE_PROJECT_NUMBER
+  : Platform.OS === "ios"
+  ? Constants.expoConfig?.extra?.FIREBASE_GCM_SENDER_ID
   : Constants.expoConfig?.extra?.FIREBASE_MESSAGING_SENDER_ID,
   appId:
     Platform.OS === 'android'
       ? Constants.expoConfig?.extra?.FIREBASE_APP_ID_ANDROID
-      : Constants.expoConfig?.extra?.FIREBASE_APP_ID,
+      : Platform.OS === "ios"
+      ? Constants.expoConfig?.extra?.FIREBASE_APP_ID_IOS
+      : Constants.expoConfig?.extra?.FIREBASE_APP_ID
 };
 
 let app;
