@@ -1,9 +1,8 @@
 import React from 'react';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { ThemeProvider, useThemeContext } from '../context/ThemeContext';
-import { LightAppTheme, DarkAppTheme } from '../theme/AppTheme';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import EmailVerificationScreen from '../screens/EmailVerificationScreen';

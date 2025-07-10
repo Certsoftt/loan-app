@@ -19,11 +19,17 @@ export const getGoogleClientId = () => {
 export const configureGoogleSignIn = () => {
   const clientId = getGoogleClientId();
   if (clientId) {
-    GoogleSignin.configure({
-      webClientId: clientId, // For Firebase Auth
-      iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
-      androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
-      forceCodeForRefreshToken: true,
+    if(Constants.platform?.ios){
+        GoogleSignin.configure({
+        iosClientId: clientId, // Use your Web client ID for Firebase Auth
+        forceCodeForRefreshToken: true,
     });
+    }else{
+        GoogleSignin.configure({
+        webClientId: clientId, // Use your Web client ID for Firebase Auth
+        offlineAccess: true,
+        forceCodeForRefreshToken: true,
+    });
+    }
   }
 };
