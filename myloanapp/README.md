@@ -404,6 +404,18 @@ npx expo start
 ```
 Scan the QR code with the real device where the app had been installed in order to launch the app.
 
+To test on android emulator or device you use: http://yourcomputeripaddress:metro-provided-port-number
+
+**To find your computer’s IP address on Windows:**
+
+1. Press `Win + R`, type `cmd`, and press Enter to open the Command Prompt.
+2. Type the following command and press Enter:
+```sh
+ipconfig
+```
+3. Look for the line labeled IPv4 Address under your active network adapter. That is your computer’s local IP address.
+
+
 ### G. Submit the App Production Build (optional)
 ```sh
 eas submit --platform android
