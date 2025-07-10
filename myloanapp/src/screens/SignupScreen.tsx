@@ -56,8 +56,8 @@ const SignupScreen: React.FC<SignupProps> = ({ navigation }) => {
     try {
       await GoogleSignin.hasPlayServices?.();
       const userInfo = await GoogleSignin.signIn?.();
-      // idToken is on userInfo.user.idToken for native GoogleSignin
-      const idToken = userInfo?.user?.idToken;
+      // idToken is on userInfo.idToken for web GoogleSignin
+      const idToken = userInfo?.idToken;
       if (!idToken) {
         setError('Google sign-in failed: No idToken returned');
         return;

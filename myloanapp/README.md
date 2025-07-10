@@ -336,22 +336,47 @@ eas init
    - During this process, Expo will generate a new EAS project ID and link it to your project.
 
 5. Copy the content of `eas.js` and replace it with the content of your generated `eas.json` file.
-   - Update your `env` property object in the `eas.json` to your own project setting. Current setting is:
+   - Update your `env` property object in the `eas.json` to your own project setting.
    ```json
       "env": {
-        "EXPO_PUBLIC_APP_ENV": "development",
-        <!-- change this to your expo dev projectID -->
-        "EXPO_PUBLIC_EAS_PROJECT_ID": "55a6eed1-0a57-4415-a452-247f1c98651d",
-        <!-- change this to your expo dev project slug -->
-        "EXPO_PUBLIC_PROJECT_SLUG": "myloanapp",
-        <!-- change this to your expo dev project owner -->
-        "EXPO_PUBLIC_OWNER": "makemorer",
-        <!-- change this to your expo dev project slug -->
-        "EXPO_PUBLIC_APP_NAME": "myloanapp",
-        <!-- change it to your project com.*****.**** name -->
-        "EXPO_PUBLIC_BUNDLE_IDENTIFIER": "com.makemorer.myloanapp",
-        <!-- change it to your project com.*****.**** name -->
-        "EXPO_PUBLIC_PACKAGE_NAME": "com.makemorer.myloanapp"
+         EXPO_PUBLIC_FIREBASE_API_KEY=
+         EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=
+         EXPO_PUBLIC_FIREBASE_PROJECT_ID=
+         EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=
+         EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+         EXPO_PUBLIC_FIREBASE_APP_ID=
+         APP_ENV=development
+         EXPO_PUBLIC_API_URL=https://development.api
+         EAS_PROJECT_ID=
+         PROJECT_SLUG=
+         OWNER=
+         # your expo dev project name is your APP_NAME value.
+         APP_NAME=
+         # use com.[account username].[project name] e.g: com.makemorer.myloanapp.
+         BUNDLE_IDENTIFIER=
+         # use com.[account username].[project name] e.g: com.makemorer.myloanapp.
+         PACKAGE_NAME=
+
+         #create a new firebase project and register platform as android, then fill up the following below:
+         EXPO_PUBLIC_FIREBASE_APP_ID_ANDROID=
+         EXPO_PUBLIC_FIREBASE_PROJECT_NUMBER=
+         EXPO_PUBLIC_FIREBASE_PROJECT_ID_ANDROID=
+         EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET_ANDROID=
+         EXPO_PUBLIC_FIREBASE_API_KEY_ANDROID=
+         EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN_ANDROID=
+
+         #create a new firebase project and register platform as ios, then fill up the following below:
+         EXPO_PUBLIC_FIREBASE_API_KEY_IOS=
+         EXPO_PUBLIC_FIREBASE_APP_ID_IOS=
+         EXPO_PUBLIC_FIREBASE_GCM_SENDER_ID=
+         EXPO_PUBLIC_FIREBASE_PROJECT_ID_IOS=
+         EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET_IOS=
+         EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN_IOS=
+
+         #using the README get the below following config
+         EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=
+         EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=
+         EXPO_PUBLIC_GOOGLE_EXPO_CLIENT_ID=
       },
    ```
 
