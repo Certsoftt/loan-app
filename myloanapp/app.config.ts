@@ -43,7 +43,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ios: {
       supportsTablet: true,
       bundleIdentifier: bundleIdentifier,
-      googleServicesFile: "./GoogleService-info.plist", // Ensure this file is present in your project root
+      googleServicesFile: "./GoogleService-Info.plist", // Ensure this file is present in your project root
     },
     android: {
       adaptiveIcon: {
