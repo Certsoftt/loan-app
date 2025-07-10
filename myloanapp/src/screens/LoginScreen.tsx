@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TextInput, Button, Text, HelperText } from 'react-native-paper';
+import { View, StyleSheet, useWindowDimensions, Platform } from 'react-native';
+import { TextInput, Button, Text, HelperText, Switch } from 'react-native-paper';
 import { auth } from '../services/firebase';
 import { signInWithEmailAndPassword, sendPasswordResetEmail, signInWithCredential, GoogleAuthProvider } from 'firebase/auth';
 import * as LocalAuthentication from 'expo-local-authentication';
@@ -8,12 +8,16 @@ import NetInfo from '@react-native-community/netinfo';
 import { logEvent } from '../services/log';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { configureGoogleSignIn } from '../services/authConfig';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useThemeContext } from '../context/ThemeContext';
 
 interface LoginProps {
   navigation: any;
 }
 
 const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
+  const { width } = useWindowDimensions();
+  const { theme, toggleTheme, paperTheme } = useThemeContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -124,40 +128,45 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text variant="headlineMedium" style={styles.title}>Login</Text>
-      <TextInput
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-        style={styles.input}
-      />
-      <TextInput
-        label="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
-      />
-      <HelperText type="error" visible={!!error}>{error}</HelperText>
-      {isOffline && (
-        <Text style={{ color: '#FFB300', textAlign: 'center', marginBottom: 8 }}>
-          You are in offline mode, using mock data.
-        </Text>
-      )}
-      <Button mode="contained" onPress={handleLogin} style={styles.button}>Login</Button>
-      <Button onPress={() => navigation.navigate('Signup')}>Don't have an account? Sign Up</Button>
-      <Button mode="outlined" onPress={handleBiometricLogin} style={styles.button}>Login with Face ID / Touch ID</Button>
-      <Button onPress={handleForgotPassword} mode="text" style={styles.button} loading={resetting} disabled={resetting}>
-        Forgot Password?
-      </Button>
-      <Button mode="outlined" onPress={handleGoogleSignIn} style={styles.button}>
-        Sign in with Google
-      </Button>
-      {!!resetMsg && <HelperText type="info" visible>{resetMsg}</HelperText>}
-    </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={Platform.OS === 'ios' ? ['top', 'left', 'right'] : ['top', 'bottom', 'left', 'right']}>
+      <View style={[styles.container, { paddingHorizontal: width * 0.04 }]}> {/* Responsive padding */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+          <Text variant="headlineMedium" style={styles.title}>Login</Text>
+          <Switch value={theme === 'dark'} onValueChange={toggleTheme} />
+        </View>
+        <TextInput
+          label="Email"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          style={styles.input}
+        />
+        <TextInput
+          label="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          style={styles.input}
+        />
+        <HelperText type="error" visible={!!error}>{error}</HelperText>
+        {isOffline && (
+          <Text style={{ color: '#FFB300', textAlign: 'center', marginBottom: 8 }}>
+            You are in offline mode, using mock data.
+          </Text>
+        )}
+        <Button mode="contained" onPress={handleLogin} style={styles.button}>Login</Button>
+        <Button onPress={() => navigation.navigate('Signup')}>Don't have an account? Sign Up</Button>
+        <Button mode="outlined" onPress={handleBiometricLogin} style={styles.button}>Login with Face ID / Touch ID</Button>
+        <Button onPress={handleForgotPassword} mode="text" style={styles.button} loading={resetting} disabled={resetting}>
+          Forgot Password?
+        </Button>
+        <Button mode="outlined" onPress={handleGoogleSignIn} style={styles.button}>
+          Sign in with Google
+        </Button>
+        {!!resetMsg && <HelperText type="info" visible>{resetMsg}</HelperText>}
+      </View>
+    </SafeAreaView>
   );
 };
 

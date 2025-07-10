@@ -22,7 +22,7 @@ export const configureGoogleSignIn = () => {
     GoogleSignin.configure({
       webClientId: clientId, // For Firebase Auth
       iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
-    //   androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+      androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
       forceCodeForRefreshToken: true,
     });
   }
