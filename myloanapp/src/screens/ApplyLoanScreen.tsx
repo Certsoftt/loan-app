@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TextInput, Button, Text, HelperText, Snackbar } from 'react-native-paper';
+import { View, StyleSheet, Platform } from 'react-native';
+import { TextInput, Button, Text, HelperText, Snackbar, Switch } from 'react-native-paper';
 import { db, auth } from '../services/firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { addLoanOffline } from '../services/offlineLoans';
 import NetInfo from '@react-native-community/netinfo';
+import { useWindowDimensions } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useThemeContext } from '../context/ThemeContext';
 
 const ApplyLoanScreen = ({ navigation }: any) => {
+  const { width } = useWindowDimensions();
+  const { theme, toggleTheme, paperTheme } = useThemeContext();
   const [amount, setAmount] = useState('');
   const [purpose, setPurpose] = useState('');
   const [error, setError] = useState('');
@@ -62,34 +67,39 @@ const ApplyLoanScreen = ({ navigation }: any) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text variant="headlineMedium" style={styles.title}>Apply for Loan</Text>
-      <TextInput
-        label="Loan Amount"
-        value={amount}
-        onChangeText={setAmount}
-        keyboardType="numeric"
-        style={styles.input}
-        accessibilityLabel="Loan Amount"
-      />
-      <TextInput
-        label="Purpose"
-        value={purpose}
-        onChangeText={setPurpose}
-        style={styles.input}
-        accessibilityLabel="Purpose"
-      />
-      <HelperText type="error" visible={!!error}>{error}</HelperText>
-      <Button mode="contained" onPress={handleSubmit} style={styles.button}>Submit</Button>
-      <Snackbar
-        visible={snackbarVisible}
-        onDismiss={() => setSnackbarVisible(false)}
-        duration={1500}
-        accessibilityLiveRegion="polite"
-      >
-        {snackbarMsg}
-      </Snackbar>
-    </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={Platform.OS === 'ios' ? ['top', 'left', 'right'] : ['top', 'bottom', 'left', 'right']}>
+      <View style={[styles.container, { paddingHorizontal: width * 0.04 }]}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+          <Text variant="headlineMedium" style={styles.title}>Apply for Loan</Text>
+          <Switch value={theme === 'dark'} onValueChange={toggleTheme} />
+        </View>
+        <TextInput
+          label="Loan Amount"
+          value={amount}
+          onChangeText={setAmount}
+          keyboardType="numeric"
+          style={styles.input}
+          accessibilityLabel="Loan Amount"
+        />
+        <TextInput
+          label="Purpose"
+          value={purpose}
+          onChangeText={setPurpose}
+          style={styles.input}
+          accessibilityLabel="Purpose"
+        />
+        <HelperText type="error" visible={!!error}>{error}</HelperText>
+        <Button mode="contained" onPress={handleSubmit} style={styles.button}>Submit</Button>
+        <Snackbar
+          visible={snackbarVisible}
+          onDismiss={() => setSnackbarVisible(false)}
+          duration={1500}
+          accessibilityLiveRegion="polite"
+        >
+          {snackbarMsg}
+        </Snackbar>
+      </View>
+    </SafeAreaView>
   );
 };
 

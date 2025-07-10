@@ -4,13 +4,16 @@ A cross-platform (iOS & Android) mobile app for managing loan applications, buil
 
 ## Features
 - **Authentication:** 
-Email/password, Google sign-in, email verification, and biometric login (Face ID/Touch ID).
+Email/password, Google sign-in, email verification, and biometric login (Face ID/Touch ID). Forgot/Reset Password (firebase)
+
+- **Logging/Analytics:**
+A simple logging utility is used to track offline login and password reset attempts. In production, this can be replaced with a full analytics solution (e.g., Firebase Analytics, Sentry).
 
 - **Loan Management:** 
 View, apply for, and track the status of loans (pending, approved, rejected, flagged for review).
 
 - **Offline Support:** 
-Create loans offline, cache them locally, and sync to Firestore when back online. Displays both cached and mock/sample loans when offline.
+Create loans offline, cache them locally, and sync to Firestore when back online. Displays both cached and mock/sample loans when offline. Offline Mock login.
 
 - **Push Notifications:** 
 Integrated with Expo Notifications for real-time updates.
@@ -158,7 +161,7 @@ All these features are accessed via cross-platform APIs, so the loan app works n
 
 ## Setup & Running the Project
 
-### 1. Prerequisites
+### A. Prerequisites
 - Node.js (LTS recommended)
 - Expo CLI (`npm install -g expo-cli`)
 - A Firebase project (see below)
@@ -170,12 +173,146 @@ git clone https://github.com/certsoftt/loan-app.git
 
 - Rename `eas.json` to `eas.js`
 
-### 2. Firebase Setup
-1. Go to [Firebase Console](https://console.firebase.google.com/) and create a new project.
-2. Register a web app and copy the config values.
-3. Enable Authentication (Email/Password, Google) and Firestore Database.
+- Create `.env.local` file
 
-### 3. Expo Dev setup
+### B. Firebase Setup
+1. Go to [Firebase Console](https://console.firebase.google.com/) and create a new project.
+2. Register a web app and Update your `.env.local` with the config values appropriately
+3. Create a new project and register for android, enable firestore database and authentication for email/password and google, then download the `google-services.json`. Update your `.env.local` with the config values appropriately.
+4. Create a new project and register for ios, enable firestore database and authentication for email/password and google, then download the `googleservice-info.plist`. Update your `.env.local` with the config values appropriately.
+5. Enable Authentication (Email/Password, Google) and Firestore Database for web platform.
+
+#### Note: For enabling google authentication with android platform you have to provide SHA fingerprint. Do the following:
+1. Install the JDK:
+   - Download and install the latest JDK from:
+  https://adoptopenjdk.net/ or https://www.oracle.com/java/technologies/downloads/
+
+2. Add keytool to your PATH:
+   - Find where Java is installed (e.g., C:\Program Files\Java\jdk-XX.X.X\bin).  - Add that bin directory to your system’s PATH environment variable.
+
+```
+ To add to PATH on Windows:  - Open Start Menu, search for “Environment Variables”, and open “Edit the system environment variables”.  - Click “Environment Variables…”  - Under “System variables”, find and select “Path”, then click “Edit”.  - Click “New” and add the path to your JDK’s bin folder (e.g., C:\Program Files\Java\jdk-XX.X.X\bin).  - Click OK to save.
+```
+
+3. Open a new terminal and run:
+
+```sh
+keytool -version
+```
+**If you see the version, keytool is now available.**
+
+4. Run the command on terminal:
+```sh
+keytool -list -v -keystore "%USERPROFILE%\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+```
+You should see output with lines like:
+```sh
+SHA1:  12:34:56:78:9A:BC:DE:F0:12:34:56:78:9A:BC:DE:F0:12:34:56:78
+SHA256: 12:34:56:78:9A:BC:DE:F0:12:34:56:78:9A:BC:DE:F0:12:34:56:78:12:34:56:78:9A:BC:DE:F0:12:34:56:78
+```
+
+5. Copy the SHA1 value and use it in the Firebase Console for Google Sign-In.
+
+
+#### Google Authentication Setup (Android & iOS)
+
+This project is configured to support Google authentication on both Android and iOS using Firebase. Here’s how it works and how to maintain it:
+
+### 1. Required Files
+- **Android:** Place your `google-services.json` file (downloaded from the Firebase Console) in the project root.
+- **iOS:** Place your `GoogleService-Info.plist` file (downloaded from the Firebase Console) in the project root.
+
+### 2. Expo Configuration
+- In `app.config.ts`, the following fields are set:
+  ```ts
+  ios: {
+    googleServicesFile: "./GoogleService-Info.plist",
+    // ...other iOS config
+  },
+  android: {
+    googleServicesFile: "./google-services.json",
+    // ...other Android config
+  },
+  ```
+- This ensures EAS Build includes the correct files for each platform.
+
+### 3. Environment Variables
+- The `.env.local` file contains platform-specific Firebase credentials:
+  - `FIREBASE_API_KEY_ANDROID`, `FIREBASE_APP_ID_ANDROID`, etc. for Android
+  - `FIREBASE_API_KEY_IOS`, `FIREBASE_APP_ID_IOS`, etc. for iOS
+  - `FIREBASE_API_KEY`, `FIREBASE_APP_ID`, etc. for web/other
+
+### 4. Firebase Initialization
+- In `src/services/firebase.ts`, the app dynamically selects the correct credentials based on the platform:
+  ```ts
+  import { Platform } from 'react-native';
+  import Constants from 'expo-constants';
+  // ...
+  const firebaseConfig = {
+    apiKey: Platform.OS === 'android' ? Constants.expoConfig?.extra?.FIREBASE_API_KEY_ANDROID :
+           Platform.OS === 'ios' ? Constants.expoConfig?.extra?.FIREBASE_API_KEY_IOS :
+           Constants.expoConfig?.extra?.FIREBASE_API_KEY,
+    // ...other fields
+  };
+  ```
+
+### 5. Firebase Console Setup
+- In the Firebase Console, register both your Android and iOS apps and download the respective config files.
+- For Android, add your SHA1 fingerprint for Google Sign-In support.
+- For iOS, use the correct bundle identifier. e.g `com.makemorer.myloanapp`
+- Set up OAuth client IDs for both platforms as instructed by Firebase by doing the following:
+
+1. **iOS: Set Up OAuth Client ID**
+- Go to the Firebase Console, select your project.
+- In the left menu, click the gear icon > Project settings.
+- Under Your apps, select your iOS app.
+- Make sure your app’s bundle identifier matches your Expo config.
+- Scroll to Your apps > iOS app > App nickname and App Store ID (optional, but recommended).
+- Download the updated GoogleService-Info.plist and place it in your project as required.
+
+2. **Android: Set Up OAuth Client ID**
+- In the Firebase Console, under Project settings, select your Android app.
+- Make sure your app’s package name matches your Expo config.
+- Under SHA certificate fingerprints, add your app’s SHA-1 and SHA-256 fingerprints (see [how to get these in README note-for-enabling-google-authentication-with-android-platform-you-have-to-provide-sha-fingerprint-do-the-following](#note-for-enabling-google-authentication-with-android-platform-you-have-to-provide-sha-fingerprint-do-the-following)).
+- Under OAuth 2.0 client IDs, you should see an entry for your Android app. If not:
+- Click Add fingerprint or Add OAuth client.
+- Enter your app’s package name and SHA-1.
+- Download the updated google-services.json and place it in your project as required.
+
+3. **Google Cloud Console: Verify OAuth Consent Screen**
+- Go to the [Google Cloud Console](https://console.cloud.google.com/).
+- Make sure you’re in the same project as your Firebase app. You can find all your projects in `All Tab`
+[All Tabs image](assets/images/alltabs.png)
+- Under OAuth 2.0 Client IDs, you should see entries for both iOS and Android.
+- If needed, configure the OAuth consent screen (add app name, support email, and authorized domains).
+
+4. **Expo/React Native Configuration**
+Ensure your app.config.ts contains the correct bundle identifier (iOS) and package name (Android).
+For Google sign-in, use the correct client IDs in your app’s code (see [how to do this in README google-authentication-setup-android--ios](#google-authentication-setup-android--ios)).
+
+
+### 6. Setting up Expo_Client_ID:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/) for your Firebase web platform project.
+
+2. Find the OAuth 2.0 Client IDs section.
+
+3. Look for a client with the type "Web client".
+ - If you don’t see one, you may need to create it:   - Click Create Credentials > OAuth client ID.   - Choose Web application.   - Name it (e.g., "Expo Go Client").   - Under Authorized redirect URIs, add:    - https://auth.expo.io/@your-username/your-app-slug    - Replace `your-username` and `your-app-slug` with your Expo account and project slug.
+
+4. After creating, copy the Client ID (it ends with `.apps.googleusercontent.com`).
+
+5. Paste this value into your .env.local as `EXPO_PUBLIC_GOOGLE_EXPO_CLIENT_ID.`
+
+
+### 7. Troubleshooting
+- Ensure the config files are present in the project root and referenced correctly in `app.config.ts`.
+- Make sure your `.env.local` values match the credentials in the config files.
+- If you change your Firebase project or credentials, update both the config files and environment variables.
+
+
+
+### C. Expo Dev setup
 1. Register on [Expo Dev](https://expo.dev)
 
 2. Install EAS CLI(if not already):
@@ -210,21 +347,25 @@ eas init
         <!-- change this to your expo dev project owner -->
         "EXPO_PUBLIC_OWNER": "makemorer",
         <!-- change this to your expo dev project slug -->
-        "EXPO_PUBLIC_APP_NAME": "myloanapp"
+        "EXPO_PUBLIC_APP_NAME": "myloanapp",
+        <!-- change it to your project com.*****.**** name -->
+        "EXPO_PUBLIC_BUNDLE_IDENTIFIER": "com.makemorer.myloanapp",
+        <!-- change it to your project com.*****.**** name -->
+        "EXPO_PUBLIC_PACKAGE_NAME": "com.makemorer.myloanapp"
       },
    ```
 
 6. Setup your Environment variables for `production`, `preview`, and `developemnt` environments on Expo Dev Using your `.env.local.example` to create the `Name`(s) of the variables. You can find the environment variables page at `https://expo.dev/accounts/[account]/projects/[project]/environment-variables`.
 
 
-### 4. Install Dependencies
+### D. Install Dependencies
 ```sh
 yarn install
 or
 npm install
 ```
 
-### 5. Build the App
+### E. Build the App
 ```sh
 eas build --profile development --platform android
 or
@@ -232,18 +373,18 @@ eas build --profile development --platform ios
 ```
 Scan the QR code To run the app on real device.
 
-### 6. Run the App
+### F. Run the App
 ```sh
 npx expo start
 ```
 Scan the QR code with the real device where the app had been installed in order to launch the app.
 
-### 7. Submit the App Production Build (optional)
+### G. Submit the App Production Build (optional)
 ```sh
 eas submit --platform android
 eas submit --platform ios
 ```
-### 8. Running Tests (oprional)
+### H. Running Tests (oprional)
 ```sh
 npm test
 ```

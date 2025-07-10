@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { Text, FAB, Badge } from 'react-native-paper';
+import { View, StyleSheet, FlatList, RefreshControl, useWindowDimensions, Platform } from 'react-native';
+import { Text, FAB, Badge, Switch } from 'react-native-paper';
 import { db, auth } from '../services/firebase';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import NetInfo from '@react-native-community/netinfo';
 import { syncLoansWithFirestore, getCachedLoans } from '../services/offlineLoans';
 import { mockLoans } from '../services/mockLoans';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useThemeContext } from '../context/ThemeContext';
 
 interface Loan {
   id: string;
@@ -15,6 +17,8 @@ interface Loan {
 }
 
 const HomeScreen = ({ navigation }: any) => {
+  const { width, height } = useWindowDimensions();
+  const { theme, toggleTheme, paperTheme } = useThemeContext();
   const [loans, setLoans] = useState<Loan[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [isOffline, setIsOffline] = useState(false);
@@ -79,36 +83,41 @@ const HomeScreen = ({ navigation }: any) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text variant="headlineMedium" style={styles.title}>My Loans</Text>
-      <Text style={{color: 'red', textAlign: 'center'}}>{isOffline ? 'You are offline. Some features may be unavailable.' : ''}</Text>
-      <FlatList
-        data={loans}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-            <Text style={{ flex: 1 }}>
-              {item.amount} - {item.status}
-              {item.offline && (
-                <Text style={{ color: '#FFB300', fontWeight: 'bold' }}> (Offline)</Text>
-              )}
-              {item.id && item.id.startsWith('mock-') && !item.offline && (
-                <Text style={{ color: '#90A4AE', fontStyle: 'italic' }}> (Sample)</Text>
-              )}
-            </Text>
-            <Badge style={{ backgroundColor: getStatusColor(item.status) }}>{item.status}</Badge>
-          </View>
-        )}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        ListEmptyComponent={<Text>No loans found.</Text>}
-      />
-      <FAB
-        style={styles.fab}
-        icon="plus"
-        onPress={() => navigation.navigate('ApplyLoan')}
-        label="Apply for Loan"
-      />
-    </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={Platform.OS === 'ios' ? ['top', 'left', 'right'] : ['top', 'bottom', 'left', 'right']}>
+      <View style={[styles.container, { paddingHorizontal: width * 0.04 }]}> {/* Responsive padding */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+          <Text variant="headlineMedium" style={styles.title}>My Loans</Text>
+          <Switch value={theme === 'dark'} onValueChange={toggleTheme} />
+        </View>
+        <Text style={{color: 'red', textAlign: 'center'}}>{isOffline ? 'You are offline. Some features may be unavailable.' : ''}</Text>
+        <FlatList
+          data={loans}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+              <Text style={{ flex: 1 }}>
+                {item.amount} - {item.status}
+                {item.offline && (
+                  <Text style={{ color: '#FFB300', fontWeight: 'bold' }}> (Offline)</Text>
+                )}
+                {item.id && item.id.startsWith('mock-') && !item.offline && (
+                  <Text style={{ color: '#90A4AE', fontStyle: 'italic' }}> (Sample)</Text>
+                )}
+              </Text>
+              <Badge style={{ backgroundColor: getStatusColor(item.status) }}>{item.status}</Badge>
+            </View>
+          )}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          ListEmptyComponent={<Text>No loans found.</Text>}
+        />
+        <FAB
+          style={styles.fab}
+          icon="plus"
+          onPress={() => navigation.navigate('ApplyLoan')}
+          label="Apply for Loan"
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 

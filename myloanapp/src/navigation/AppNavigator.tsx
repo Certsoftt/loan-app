@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useColorScheme } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { ThemeProvider, useThemeContext } from '../context/ThemeContext';
 import { LightAppTheme, DarkAppTheme } from '../theme/AppTheme';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
@@ -14,10 +14,10 @@ import ApplyLoanScreen from '../screens/ApplyLoanScreen';
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
-  const scheme = useColorScheme();
+  const { paperTheme } = useThemeContext();
   return (
-    <PaperProvider theme={scheme === 'dark' ? DarkAppTheme : LightAppTheme}>
-      <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <PaperProvider theme={paperTheme}>
+      <NavigationContainer theme={paperTheme}>
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
@@ -31,4 +31,10 @@ const AppNavigator = () => {
   );
 };
 
-export default AppNavigator;
+const AppWithThemeProvider = () => (
+  <ThemeProvider>
+    <AppNavigator />
+  </ThemeProvider>
+);
+
+export default AppWithThemeProvider;
