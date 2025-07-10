@@ -33,7 +33,7 @@ myloanapp/
 │   ├── screens/            # App screens (Login, Signup, Home, ApplyLoan, etc.)
 │   ├── navigation/         # Navigation setup
 │   ├── services/           # Firebase, notifications, offline, and mock data logic
-│   ├── hooks/              # Custom React hooks (no hooks for now)
+│   ├── hooks/              # Custom React hooks (ThemeContext)
 │   ├── contexts/           # React context providers (no contexts for now)
 │   ├── utils/              # Utility functions (no utility functions for now)
 │   ├── theme/              # App theming (light/dark)
