@@ -292,16 +292,16 @@ For Google sign-in, use the correct client IDs in your app’s code (see [how to
 
 ### 6. Setting up Expo_Client_ID:
 
-1. Go to the Google Cloud Console for your Firebase web platform project.
+1. Go to the Google Cloud Console for your Firebase web platform project.
 
-2. Find the OAuth 2.0 Client IDs section.
+2. Find the OAuth 2.0 Client IDs section.
 
-3. Look for a client with the type "Web client".
+3. Look for a client with the type "Web client".
  - If you don’t see one, you may need to create it:   - Click Create Credentials > OAuth client ID.   - Choose Web application.   - Name it (e.g., "Expo Go Client").   - Under Authorized redirect URIs, add:    - https://auth.expo.io/@your-username/your-app-slug    - Replace `your-username` and `your-app-slug` with your Expo account and project slug.
 
-4. After creating, copy the Client ID (it ends with `.apps.googleusercontent.com`).
+4. After creating, copy the Client ID (it ends with `.apps.googleusercontent.com`).
 
-5. Paste this value into your .env.local as `EXPO_PUBLIC_GOOGLE_EXPO_CLIENT_ID.`
+5. Paste this value into your .env.local as `EXPO_PUBLIC_GOOGLE_EXPO_CLIENT_ID.`
 
 
 ### 7. Troubleshooting
