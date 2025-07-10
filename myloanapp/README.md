@@ -4,13 +4,16 @@ A cross-platform (iOS & Android) mobile app for managing loan applications, buil
 
 ## Features
 - **Authentication:** 
-Email/password, Google sign-in, email verification, and biometric login (Face ID/Touch ID).
+Email/password, Google sign-in, email verification, and biometric login (Face ID/Touch ID). Forgot/Reset Password (firebase)
+
+- **Logging/Analytics:**
+A simple logging utility is used to track offline login and password reset attempts. In production, this can be replaced with a full analytics solution (e.g., Firebase Analytics, Sentry).
 
 - **Loan Management:** 
 View, apply for, and track the status of loans (pending, approved, rejected, flagged for review).
 
 - **Offline Support:** 
-Create loans offline, cache them locally, and sync to Firestore when back online. Displays both cached and mock/sample loans when offline.
+Create loans offline, cache them locally, and sync to Firestore when back online. Displays both cached and mock/sample loans when offline. Offline Mock login.
 
 - **Push Notifications:** 
 Integrated with Expo Notifications for real-time updates.

@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, Text, HelperText } from 'react-native-paper';
 import { auth } from '../services/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import * as LocalAuthentication from 'expo-local-authentication';
+import NetInfo from '@react-native-community/netinfo';
+import { logEvent } from '../services/log';
 
 interface LoginProps {
   navigation: any;
@@ -13,6 +15,16 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isOffline, setIsOffline] = useState(false);
+  const [resetMsg, setResetMsg] = useState('');
+  const [resetting, setResetting] = useState(false);
+
+  React.useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsOffline(!state.isConnected);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const validate = () => {
     if (!email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
@@ -29,11 +41,23 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 
   const handleLogin = async () => {
     if (!validate()) return;
+    if (isOffline) {
+      logEvent('offline_login', { email });
+      // Show offline mode message and create mock session
+      setError('You are in offline mode, using mock data.');
+      // Simulate login and navigate to Home
+      setTimeout(() => {
+        setError('');
+        navigation.replace('Home');
+      }, 1000);
+      return;
+    }
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigation.replace('Home');
     } catch (e: any) {
       setError(e.message || 'Login failed');
+      logEvent('login_failed', { email, error: e.message });
     }
   };
 
@@ -57,6 +81,24 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
+      setError('Enter a valid email to reset password');
+      return;
+    }
+    setResetting(true);
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetMsg('Password reset email sent! Please check your inbox.');
+      logEvent('password_reset_requested', { email });
+    } catch (e: any) {
+      setError(e.message || 'Failed to send reset email');
+      logEvent('password_reset_failed', { email, error: e.message });
+    } finally {
+      setResetting(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text variant="headlineMedium" style={styles.title}>Login</Text>
@@ -76,9 +118,18 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
         style={styles.input}
       />
       <HelperText type="error" visible={!!error}>{error}</HelperText>
+      {isOffline && (
+        <Text style={{ color: '#FFB300', textAlign: 'center', marginBottom: 8 }}>
+          You are in offline mode, using mock data.
+        </Text>
+      )}
       <Button mode="contained" onPress={handleLogin} style={styles.button}>Login</Button>
       <Button onPress={() => navigation.navigate('Signup')}>Don't have an account? Sign Up</Button>
       <Button mode="outlined" onPress={handleBiometricLogin} style={styles.button}>Login with Face ID / Touch ID</Button>
+      <Button onPress={handleForgotPassword} mode="text" style={styles.button} loading={resetting} disabled={resetting}>
+        Forgot Password?
+      </Button>
+      {!!resetMsg && <HelperText type="info" visible>{resetMsg}</HelperText>}
     </View>
   );
 };
